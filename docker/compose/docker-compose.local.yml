@@ -1,0 +1,53 @@
+version: '3.5'
+services:
+  koa-workflow:
+    env_file: '../../.env.LOCAL'
+    entrypoint: ['nodemon', --inspect=0.0.0.0,'/workflow/src/server.js']
+
+  koa-cockpit:
+    env_file: '../../.env.LOCAL'
+    entrypoint: ['nodemon',--inspect=0.0.0.0,'/cockpit/src/index.js']
+
+  flowbuild:
+    env_file: '../../.env.LOCAL'
+    image: node:12.14.1
+    container_name: flowbuild
+    depends_on:
+      - db
+    networks:
+      - flowbuild
+    volumes:
+      - ../../scripts:/flowbuild/scripts
+      - ../../knexfile.js:/flowbuild/knexfile.js
+      - ../../package.json:/flowbuild/package.json
+      - ../../package-lock.json:/flowbuild/package-lock.json
+      - ../../node_modules:/flowbuild/node_modules
+      - ../../db:/flowbuild/db
+    command: ["node","run", "migrate", "&&","node","run","seed"]
+  
+  db: # postgres
+    image: postgres:10
+    container_name: flowbuild-database
+    ports:
+      - 5432:5432
+    env_file: '../../.env.LOCAL'
+    networks:
+      - flowbuild
+
+  mqtt:
+    image: hivemq/hivemq4:latest
+    container_name: mqtt
+    ports:
+      - 8080:8080
+      - 1883:1883
+      - 8000:8000
+    networks:
+      - flowbuild
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 7070:8080
+    networks:
+      - flowbuild

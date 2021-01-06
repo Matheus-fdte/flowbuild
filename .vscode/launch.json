@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "name": "Docker: debug workflow",
+            "remoteRoot": "/workflow",
+            "localRoot": "${workspaceFolder}/projects/koa-workflow/app",
+            "protocol": "inspector",
+            "restart": true
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Local: debug workflow",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/projects/koa-workflow/app/src/server.js"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "name": "Docker: debug cockpit",
+            "remoteRoot": "/workflow",
+            "localRoot": "${workspaceFolder}/projects/koa-cockpit-api/app",
+            "protocol": "inspector",
+            "restart": true
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Local: debug cockpit",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/projects/koa-cockpit-api/app/src/server.js"
+        }
+    ]
+}

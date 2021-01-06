@@ -1,0 +1,34 @@
+version: '3.5'
+services:
+  koa-workflow:
+    build:
+      context: ../../
+      dockerfile: ./docker/DOCKERFILE.workflow
+    container_name: workflow
+    volumes:
+      - ../../projects/koa-workflow/app/src:/workflow/src
+      - /workflow/node_modules
+    ports:
+      - 7227:7227
+      - 9229:9229
+      - 3000:3000
+    networks:
+      - flowbuild
+
+  koa-cockpit:
+    build:
+      context: ../../
+      dockerfile: ./docker/DOCKERFILE.cockpit
+    container_name: cockpit
+    volumes:
+      - ../../projects/koa-cockpit-api/src:/cockpit/src
+      - /cockpit/node_modules
+    ports:
+      - 7228:7227
+      - 9230:9229
+      - 3100:3000
+    networks:
+      - flowbuild
+
+networks:
+  flowbuild:

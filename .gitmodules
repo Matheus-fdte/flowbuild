@@ -1,0 +1,9 @@
+[submodule "projects/koa-cockpit-api"]
+	path = projects/koa-cockpit-api
+	url = git@github.com:Matheus-fdte/cockpit.git
+[submodule "projects/engine"]
+	path = projects/engine
+	url = git@github.com:Matheus-fdte/engine.git
+[submodule "projects/koa-workflow"]
+	path = projects/koa-workflow
+	url = git@github.com:Matheus-fdte/workflow.git

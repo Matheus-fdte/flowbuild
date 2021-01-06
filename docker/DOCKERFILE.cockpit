@@ -1,0 +1,25 @@
+FROM node:12.14.1 as Builder
+
+COPY ./projects/koa-cockpit-api /cockpit
+
+WORKDIR /cockpit
+
+RUN npm install
+RUN npm rebuild
+
+# real image
+FROM node:12.14.1-slim as App
+
+WORKDIR /cockpit
+
+COPY --from=Builder /cockpit/node_modules ./node_modules
+
+# add `node_modules/.bin` to $PATH
+ENV PATH /cockpit/node_modules/.bin:$PATH
+
+COPY  ./projects/koa-cockpit-api/src /cockpit/src
+
+COPY ./projects/koa-cockpit-api/package.json /cockpit/package.json
+COPY ./projects/koa-cockpit-api/package-lock.json /cockpit/package-lock.json
+
+ENTRYPOINT ["node", "/cockpit/src/index.js"]
